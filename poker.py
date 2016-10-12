@@ -22,6 +22,14 @@ def kind(n, ranks):
         if ranks.count(r) == n: return r
     return None
 
+def two_pair(ranks):
+    pair = kin(2, ranks)
+    lowpair = kind(2, list(reversed(ranks)))
+    if pair and lowpair != pair:
+        return (pair, lowpair)
+    else:
+        return None
+
 def hand_rank(hand):
     "return a value of the hand"
     ranks = card_ranks(hand)
