@@ -1,6 +1,18 @@
 
 def poker(hands):
-    return max(hands, key = hand_rank)
+    return allmax(hands, key = hand_rank)
+
+def allmax(hands, key = None):
+    "Return all max"
+    result, maxval = [], None
+    key = key or (lambda x: x)
+    for x in iterable:
+        xval = key(x)
+        if not result or xval > maxval:
+            result, maxval = [x], xval
+        elif xval == maxval:
+            result.append(x)
+    return result
 
 def straight(ranks):
     "True if a 5-card straigth"
@@ -15,7 +27,7 @@ def card_ranks(hand):
     "Return a list of the ranks"
     ranks = ['--23456789TJQKA'.index(r) for r,s in hand]
     ranks.sort(reverse=True)
-    return ranks
+    return [5, 4, 3, 2, 1] if (ranks == [14, 5, 4, 3, 2]) else ranks
 
 def kind(n, ranks):
     for r in ranks:
