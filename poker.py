@@ -2,6 +2,12 @@
 def poker(hands):
     return max(hands, key = hand_rank)
 
+def card_ranks(hand):
+    "Return a list of the ranks"
+    ranks = ['--23456789TJQKA'.index(r) for r,s in hand]
+    ranks.sort(reverse=True)
+    return ranks
+
 def hand_rank(hand):
     "return a value of the hand"
     ranks = card_ranks(hand)
