@@ -17,6 +17,11 @@ def card_ranks(hand):
     ranks.sort(reverse=True)
     return ranks
 
+def kind(n, ranks):
+    for r in ranks:
+        if ranks.count(r) == n: return r
+    return None
+
 def hand_rank(hand):
     "return a value of the hand"
     ranks = card_ranks(hand)
