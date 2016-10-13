@@ -5,6 +5,15 @@ def deal(numhands, n=5, deck=[r+s for r in '23456789TJQKA' for s in 'SHDC']):
     random.shuffle(deck)
     return [deck[n*i:n*(i+1)] for i in range(numhands)]
 
+def hand_percentages(n=50000):
+    counts = [0]*9
+    for i in range(n/10):
+        for hand in deal(10):
+            ranking = hand_rank(hand)[0]
+            counts[ranking] += 1
+    for i in reversed(range(9)):
+        print 100.*counts[i]/n
+
 def poker(hands):
     return allmax(hands, key = hand_rank)
 
@@ -41,7 +50,7 @@ def kind(n, ranks):
     return None
 
 def two_pair(ranks):
-    pair = kin(2, ranks)
+    pair = kind(2, ranks)
     lowpair = kind(2, list(reversed(ranks)))
     if pair and lowpair != pair:
         return (pair, lowpair)
@@ -51,7 +60,7 @@ def two_pair(ranks):
 def hand_rank(hand):
     "return a value of the hand"
     ranks = card_ranks(hand)
-    if straigth(ranks) and flush(hand):      #straight flush
+    if straight(ranks) and flush(hand):      #straight flush
         return (8, max(ranks))
     elif kind(4,ranks):                      #poker
         return (7, kind(4, ranks), kind(1, ranks))
