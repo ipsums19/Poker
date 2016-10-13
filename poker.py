@@ -57,24 +57,21 @@ def two_pair(ranks):
     else:
         return None
 
+count_ranking = {(5,):10, (4,1):7, (3,2):6, (3, 1, 1):3, (2, 2, 1):2,
+                (2, 1, 1, 1):1, (1, 1, 1, 1, 1):0}
+
 def hand_rank(hand):
     "return a value of the hand"
-    ranks = card_ranks(hand)
-    if straight(ranks) and flush(hand):      #straight flush
-        return (8, max(ranks))
-    elif kind(4,ranks):                      #poker
-        return (7, kind(4, ranks), kind(1, ranks))
-    elif kind(3, ranks) and kind(2, ranks):  #full house
-        return (6, kind(3, ranks), kind(2, ranks))
-    elif flush(hand):                        #flush
-        return (5, ranks)
-    elif straight(ranks):                    #straight
-        return (4, max(ranks))
-    elif kind(3, ranks):                     #3 of a kind
-        return (3, kind(3, ranks), ranks)
-    elif two_pair(ranks):                    #2pair
-        return (2, two_pair(ranks), ranks)
-    elif kind(2, ranks):                     #2 of a kind
-        return (1, kind(2, ranks), ranks)
-    else:                                    #nothing
-        return (0, ranks)
+    groups = group(['--23456789TJQKA'.index(r) for r,s in hand])
+    counts, ranks = unzip(groups)
+    if ranks == (14, 5, 4, 3, 2):
+        ranks = (5, 4, 3, 2, 1)
+    straight = len(ranks) == 5 and max(ranks) - min(ranks) == 4
+    flush = len(set([s for r,s in hand])) == 1
+    return max(count_ranking[counts], 4*straight + 5*flush), ranks
+
+def group(items):
+    groups = [(items.count(x), x) for x in set(items)]
+    return sorted(groups, reverse = True)
+
+def unzip(pairs): return zip(*pairs)
